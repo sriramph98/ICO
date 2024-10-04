@@ -1,0 +1,82 @@
+<html>
+
+<body>
+    <div>
+        <label type="text" id="fileName" placeholder="Icon"></label>
+    </div>
+    <button id="export-btn">Export to ICO</button>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Makes sure the content is vertically centered */
+            margin: 0;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 17px;
+            font-weight: 800;
+            font-family: Inter Display;
+        }
+
+        button {
+            border-radius: 24px;
+            background-color: black;
+            color: #FFF;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        const exportBtn = document.getElementById('export-btn');
+
+        // Send message to Figma to start export when button is clicked
+        exportBtn.onclick = () => {
+            const fileNameInput = document.getElementById('fileName').value || 'icon';
+            parent.postMessage({ pluginMessage: { type: 'convert-frame', fileName: fileNameInput } }, '*');
+        };
+
+        // Handle message from the Figma side (including frame name)
+        onmessage = (event) => {
+            const msg = event.data.pluginMessage;
+            if (msg.type === 'process-image') {
+                const pngBytes = msg.data;
+                const fileName = msg.fileName || 'icon';
+
+                // Set the frame name as the default in the input field
+                document.getElementById('fileName').value = fileName;
+
+                // Convert the PNG bytes into a Blob and create an Image element
+                const blob = new Blob([new Uint8Array(pngBytes)], { type: 'image/png' });
+                const img = new Image();
+                img.src = URL.createObjectURL(blob);
+
+                img.onload = () => {
+                    // Create a canvas element
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    // Convert canvas to ICO format and trigger download
+                    canvas.toBlob((blob) => {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `${fileName}.ico`;  // Save as .ico file
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);  // Remove the link after download
+                    }, 'image/vnd.microsoft.icon');
+                };
+            }
+        };
+    </script>
+</body>
+
+</html>
