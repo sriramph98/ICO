@@ -1,16 +1,17 @@
 {
-  "name": "ICO",
+  "name": "ico",
   "version": "1.0.0",
   "description": "Your Figma Plugin",
-  "main": "code.js",
+  "main": "code.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules .",
     "lint:fix": "eslint --ext .ts,.tsx --ignore-pattern node_modules --fix .",
-    "watch": "npm run build -- --watch"
+    "watch": "npm run build -- --watch",
+    "start": "node server.js"
   },
   "author": "",
-  "license": "",
+  "license": "ISC",
   "devDependencies": {
     "@figma/eslint-plugin-figma-plugins": "*",
     "@figma/plugin-typings": "*",
@@ -40,5 +41,12 @@
         }
       ]
     }
+  },
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.21.0",
+    "icon-gen": "^5.0.0",
+    "multer": "^1.4.5-lts.1",
+    "png2icns": "^0.0.1"
   }
 }
