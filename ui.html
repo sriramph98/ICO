@@ -10,7 +10,7 @@
             font-family: 'Inter', sans-serif;
             padding: 24px;
             text-align: center;
-          
+
         }
 
         button {
@@ -60,10 +60,10 @@
         function showPreview(imageSrc) {
             const img = document.getElementById('preview');
             const selectText = document.getElementById('select-text');
-            
+
             img.src = imageSrc;
             img.style.display = 'inline-block'; // Show the image when source is assigned
-            
+
             // Hide the "Select a frame to preview" text
             selectText.style.display = 'none';
         }

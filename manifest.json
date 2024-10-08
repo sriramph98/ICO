@@ -1,5 +1,5 @@
 {
-  "name": "Frame to .ICO Converter",
+  "name": "ICO Generator",
   "id": "1424001571997245912",
   "api": "1.0.0",
   "main": "code.ts",
